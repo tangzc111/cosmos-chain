@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	"tokenchain/x/core/types"
+	"cosmos-chain/x/core/types"
 
 	"cosmossdk.io/collections"
 	errorsmod "cosmossdk.io/errors"

@@ -2,6 +2,7 @@ package app
 
 import (
 	"io"
+	"strings"
 
 	clienthelpers "cosmossdk.io/client/v2/helpers"
 	"cosmossdk.io/core/appmodule"
@@ -45,13 +46,13 @@ import (
 	ibctransferkeeper "github.com/cosmos/ibc-go/v10/modules/apps/transfer/keeper"
 	ibckeeper "github.com/cosmos/ibc-go/v10/modules/core/keeper"
 
-	"tokenchain/docs"
-	coremodulekeeper "tokenchain/x/core/keeper"
+	"cosmos-chain/docs"
+	coremodulekeeper "cosmos-chain/x/core/keeper"
 )
 
 const (
 	// Name is the name of the application.
-	Name = "tokenchain"
+	Name = "cosmos-chain"
 	// AccountAddressPrefix is the prefix for accounts addresses.
 	AccountAddressPrefix = "cosmos"
 	// ChainCoinType is the coin type of the chain.
@@ -105,7 +106,7 @@ type App struct {
 
 func init() {
 	var err error
-	clienthelpers.EnvPrefix = Name
+	clienthelpers.EnvPrefix = strings.ToUpper(strings.ReplaceAll(Name, "-", "_"))
 	DefaultNodeHome, err = clienthelpers.GetNodeHomeDirectory("." + Name)
 	if err != nil {
 		panic(err)

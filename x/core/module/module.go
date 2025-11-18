@@ -14,8 +14,8 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"google.golang.org/grpc"
 
-	"tokenchain/x/core/keeper"
-	"tokenchain/x/core/types"
+	"cosmos-chain/x/core/keeper"
+	"cosmos-chain/x/core/types"
 )
 
 var (

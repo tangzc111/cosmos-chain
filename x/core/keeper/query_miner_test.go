@@ -10,8 +10,8 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"tokenchain/x/core/keeper"
-	"tokenchain/x/core/types"
+	"cosmos-chain/x/core/keeper"
+	"cosmos-chain/x/core/types"
 )
 
 func createNMiner(keeper keeper.Keeper, ctx context.Context, n int) []types.Miner {

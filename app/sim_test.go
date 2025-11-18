@@ -33,7 +33,7 @@ import (
 )
 
 const (
-	SimAppChainID = "tokenchain-simapp"
+	SimAppChainID = "cosmos-chain-simapp"
 )
 
 var FlagEnableStreamingValue bool
@@ -132,7 +132,7 @@ func TestFullAppSimulation(t *testing.T) {
 	if !simcli.FlagSigverifyTxValue {
 		app.SetNotSigverifyTx()
 	}
-	require.Equal(t, "tokenchain", app.Name())
+	require.Equal(t, "cosmos-chain", app.Name())
 
 	// run randomized simulation
 	_, simParams, simErr := simulation.SimulateFromSeed(

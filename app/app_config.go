@@ -2,8 +2,8 @@ package app
 
 import (
 	"time"
-	_ "tokenchain/x/core/module"
-	coremoduletypes "tokenchain/x/core/types"
+	_ "cosmos-chain/x/core/module"
+	coremoduletypes "cosmos-chain/x/core/types"
 
 	runtimev1alpha1 "cosmossdk.io/api/cosmos/app/runtime/v1alpha1"
 	appv1alpha1 "cosmossdk.io/api/cosmos/app/v1alpha1"

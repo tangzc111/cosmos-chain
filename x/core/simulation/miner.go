@@ -10,8 +10,8 @@ import (
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
 
-	"tokenchain/x/core/keeper"
-	"tokenchain/x/core/types"
+	"cosmos-chain/x/core/keeper"
+	"cosmos-chain/x/core/types"
 )
 
 func SimulateMsgCreateMiner(

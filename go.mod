@@ -1,4 +1,4 @@
-module tokenchain
+module cosmos-chain
 
 go 1.24.0
 

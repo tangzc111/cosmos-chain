@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"tokenchain/x/core/types"
+	"cosmos-chain/x/core/types"
 )
 
 var _ types.QueryServer = queryServer{}

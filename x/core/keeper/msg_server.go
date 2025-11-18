@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"tokenchain/x/core/types"
+	"cosmos-chain/x/core/types"
 )
 
 type msgServer struct {

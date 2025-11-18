@@ -1,58 +1,58 @@
 syntax = "proto3";
 
-package tokenchain.core.v1;
+package cosmoschain.core.v1;
 
 import "amino/amino.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
-import "tokenchain/core/v1/block_record.proto";
-import "tokenchain/core/v1/miner.proto";
-import "tokenchain/core/v1/params.proto";
-import "tokenchain/core/v1/user.proto";
+import "cosmoschain/core/v1/block_record.proto";
+import "cosmoschain/core/v1/miner.proto";
+import "cosmoschain/core/v1/params.proto";
+import "cosmoschain/core/v1/user.proto";
 
-option go_package = "tokenchain/x/core/types";
+option go_package = "cosmos-chain/x/core/types";
 
 // Query defines the gRPC querier service.
 service Query {
   // Parameters queries the parameters of the module.
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
-    option (google.api.http).get = "/tokenchain/core/v1/params";
+    option (google.api.http).get = "/cosmoschain/core/v1/params";
   }
 
   // ListUser Queries a list of User items.
   rpc GetUser(QueryGetUserRequest) returns (QueryGetUserResponse) {
-    option (google.api.http).get = "/tokenchain/core/v1/user/{index}";
+    option (google.api.http).get = "/cosmoschain/core/v1/user/{index}";
   }
 
   // ListUser defines the ListUser RPC.
   rpc ListUser(QueryAllUserRequest) returns (QueryAllUserResponse) {
-    option (google.api.http).get = "/tokenchain/core/v1/user";
+    option (google.api.http).get = "/cosmoschain/core/v1/user";
   }
 
   // ListMiner Queries a list of Miner items.
   rpc GetMiner(QueryGetMinerRequest) returns (QueryGetMinerResponse) {
-    option (google.api.http).get = "/tokenchain/core/v1/miner/{index}";
+    option (google.api.http).get = "/cosmoschain/core/v1/miner/{index}";
   }
 
   // ListMiner defines the ListMiner RPC.
   rpc ListMiner(QueryAllMinerRequest) returns (QueryAllMinerResponse) {
-    option (google.api.http).get = "/tokenchain/core/v1/miner";
+    option (google.api.http).get = "/cosmoschain/core/v1/miner";
   }
 
   // ListBlockRecord Queries a list of BlockRecord items.
   rpc GetBlockRecord(QueryGetBlockRecordRequest) returns (QueryGetBlockRecordResponse) {
-    option (google.api.http).get = "/tokenchain/core/v1/block_record/{index}";
+    option (google.api.http).get = "/cosmoschain/core/v1/block_record/{index}";
   }
 
   // ListBlockRecord defines the ListBlockRecord RPC.
   rpc ListBlockRecord(QueryAllBlockRecordRequest) returns (QueryAllBlockRecordResponse) {
-    option (google.api.http).get = "/tokenchain/core/v1/block_record";
+    option (google.api.http).get = "/cosmoschain/core/v1/block_record";
   }
 
   // LatestBlock returns the metadata for the most recently committed block.
   rpc LatestBlock(QueryLatestBlockRequest) returns (QueryLatestBlockResponse) {
-    option (google.api.http).get = "/tokenchain/core/v1/block/latest";
+    option (google.api.http).get = "/cosmoschain/core/v1/block/latest";
   }
 }
 

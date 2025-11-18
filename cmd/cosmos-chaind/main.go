@@ -7,8 +7,8 @@ import (
 	clienthelpers "cosmossdk.io/client/v2/helpers"
 	svrcmd "github.com/cosmos/cosmos-sdk/server/cmd"
 
-	"tokenchain/app"
-	"tokenchain/cmd/tokenchaind/cmd"
+	"cosmos-chain/app"
+	"cosmos-chain/cmd/cosmos-chaind/cmd"
 )
 
 func main() {

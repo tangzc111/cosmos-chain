@@ -1,5 +1,5 @@
-# tokenchain
-**tokenchain** is a blockchain built using Cosmos SDK and Tendermint and created with [Ignite CLI](https://ignite.com/cli).
+# cosmos-chain
+**cosmos-chain** is a blockchain built using Cosmos SDK and Tendermint and created with [Ignite CLI](https://ignite.com/cli).
 
 ## Get started
 
@@ -22,19 +22,19 @@ ignite chain serve
 
 ## 常用交易命令
 
-所有命令默认通过 `tokenchaind` CLI 发送，`[flags]` 中至少需要 `--from <key-name>`、`--chain-id tokenchain` 和 `--keyring-backend test` 等签名信息。
+所有命令默认通过 `cosmos-chaind` CLI 发送，`[flags]` 中至少需要 `--from <key-name>`、`--chain-id cosmos-chain` 和 `--keyring-backend test` 等签名信息。
 
 | 能力 | CLI 示例 |
 | --- | --- |
-| 注册用户 | `tokenchaind tx core create-user <bech32-address> <bech32-address> "Alice" "first operator" --from alice` |
-| 更新用户 | `tokenchaind tx core update-user <bech32-address> "" "new alias" "profile" --from alice` |
-| 删除用户 | `tokenchaind tx core delete-user <bech32-address> --from alice` |
-| 铸造代币 | `tokenchaind tx core mint <recipient> 1000 stake --from alice` |
-| 账户转账 | `tokenchaind tx core transfer <to> 50 stake --from bob` |
-| 注册矿工 | `tokenchaind tx core create-miner <addr> <addr> 10 "validator" --from <addr>` |
-| 更新矿工 | `tokenchaind tx core update-miner <addr> "" 20 "fast node" --from <addr>` |
-| 删除矿工 | `tokenchaind tx core delete-miner <addr> --from <addr>` |
-| 发放矿工奖励 | `tokenchaind tx core reward-miner <miner-addr> 5 stake --from alice` |
+| 注册用户 | `cosmos-chaind tx core create-user <bech32-address> <bech32-address> "Alice" "first operator" --from alice` |
+| 更新用户 | `cosmos-chaind tx core update-user <bech32-address> "" "new alias" "profile" --from alice` |
+| 删除用户 | `cosmos-chaind tx core delete-user <bech32-address> --from alice` |
+| 铸造代币 | `cosmos-chaind tx core mint <recipient> 1000 stake --from alice` |
+| 账户转账 | `cosmos-chaind tx core transfer <to> 50 stake --from bob` |
+| 注册矿工 | `cosmos-chaind tx core create-miner <addr> <addr> 10 "validator" --from <addr>` |
+| 更新矿工 | `cosmos-chaind tx core update-miner <addr> "" 20 "fast node" --from <addr>` |
+| 删除矿工 | `cosmos-chaind tx core delete-miner <addr> --from <addr>` |
+| 发放矿工奖励 | `cosmos-chaind tx core reward-miner <miner-addr> 5 stake --from alice` |
 
 > 提示：`create-user`/`create-miner` 的第一个参数 `index` 必须与地址一致，CLI 会按照 proto 字段顺序依次读取参数。
 
@@ -49,30 +49,30 @@ ignite chain serve
 
 ```
 # 查看所有用户
-tokenchaind q core list-user
+cosmos-chaind q core list-user
 
 # 查询单个用户
-tokenchaind q core get-user <bech32-address>
+cosmos-chaind q core get-user <bech32-address>
 
 # 查看矿工列表
-tokenchaind q core list-miner
+cosmos-chaind q core list-miner
 
 # 当前区块信息
-tokenchaind q core latest-block
+cosmos-chaind q core latest-block
 
 # 按高度查看区块
-tokenchaind q core get-block-record <height>
+cosmos-chaind q core get-block-record <height>
 ```
 
 对应的 REST 端点可直接用 `curl` 访问，例如：
 
 ```bash
-curl http://localhost:1317/tokenchain/core/v1/user/{bech32-address}
-curl http://localhost:1317/tokenchain/core/v1/block/latest
-curl "http://localhost:1317/tokenchain/core/v1/block_record/{height}"
+curl http://localhost:1317/cosmoschain/core/v1/user/{bech32-address}
+curl http://localhost:1317/cosmoschain/core/v1/block/latest
+curl "http://localhost:1317/cosmoschain/core/v1/block_record/{height}"
 ```
 
-要通过 REST 发送交易，可向 `/cosmos/tx/v1beta1/txs` 提交 `tokenchain.core.v1` 包下的 `MsgMint`、`MsgTransfer`、`MsgRewardMiner` 等消息体。
+要通过 REST 发送交易，可向 `/cosmos/tx/v1beta1/txs` 提交 `cosmoschain.core.v1` 包下的 `MsgMint`、`MsgTransfer`、`MsgRewardMiner` 等消息体。
 
 ### Configure
 
@@ -102,9 +102,9 @@ After a draft release is created, make your final changes from the release page 
 To install the latest version of your blockchain node's binary, execute the following command on your machine:
 
 ```
-curl https://get.ignite.com/username/tokenchain@latest! | sudo bash
+curl https://get.ignite.com/username/cosmos-chain@latest! | sudo bash
 ```
-`username/tokenchain` should match the `username` and `repo_name` of the Github repository to which the source code was pushed. Learn more about [the install process](https://github.com/ignite/installer).
+`username/cosmos-chain` should match the `username` and `repo_name` of the Github repository to which the source code was pushed. Learn more about [the install process](https://github.com/ignite/installer).
 
 ## Learn more
 

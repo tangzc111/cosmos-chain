@@ -17,10 +17,10 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/spf13/cobra"
 
-	"tokenchain/app"
+	"cosmos-chain/app"
 )
 
-// NewRootCmd creates a new root command for tokenchaind. It is called once in the main function.
+// NewRootCmd creates a new root command for cosmos-chaind. It is called once in the main function.
 func NewRootCmd() *cobra.Command {
 	var (
 		autoCliOpts        autocli.AppOptions
@@ -44,7 +44,7 @@ func NewRootCmd() *cobra.Command {
 
 	rootCmd := &cobra.Command{
 		Use:           app.Name + "d",
-		Short:         "tokenchain node",
+		Short:         "cosmos-chain node",
 		SilenceErrors: true,
 		PersistentPreRunE: func(cmd *cobra.Command, _ []string) error {
 			// set the default command outputs

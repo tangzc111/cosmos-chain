@@ -8,8 +8,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 
-	"tokenchain/x/core/keeper"
-	"tokenchain/x/core/types"
+	"cosmos-chain/x/core/keeper"
+	"cosmos-chain/x/core/types"
 )
 
 func SimulateMsgMint(

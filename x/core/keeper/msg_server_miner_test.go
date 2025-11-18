@@ -7,8 +7,8 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stretchr/testify/require"
 
-	"tokenchain/x/core/keeper"
-	"tokenchain/x/core/types"
+	"cosmos-chain/x/core/keeper"
+	"cosmos-chain/x/core/types"
 )
 
 func TestMinerMsgServerCreate(t *testing.T) {

@@ -7,9 +7,9 @@ import (
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
 
-	"tokenchain/testutil/sample"
-	coresimulation "tokenchain/x/core/simulation"
-	"tokenchain/x/core/types"
+	"cosmos-chain/testutil/sample"
+	coresimulation "cosmos-chain/x/core/simulation"
+	"cosmos-chain/x/core/types"
 )
 
 // GenerateGenesisState creates a randomized GenState of the module.

@@ -1,13 +1,13 @@
 syntax = "proto3";
-package tokenchain.core.module.v1;
+package cosmoschain.core.module.v1;
 
 import "cosmos/app/v1alpha1/module.proto";
 
-option go_package = "tokenchain/x/core/types";
+option go_package = "cosmos-chain/x/core/types";
 
 // Module is the config object for the module.
 message Module {
-  option (cosmos.app.v1alpha1.module) = {go_import: "tokenchain/x/core"};
+  option (cosmos.app.v1alpha1.module) = {go_import: "cosmos-chain/x/core"};
 
   // authority defines the custom module authority.
   // If not set, defaults to the governance module.

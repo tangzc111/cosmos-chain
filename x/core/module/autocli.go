@@ -3,7 +3,7 @@ package core
 import (
 	autocliv1 "cosmossdk.io/api/cosmos/autocli/v1"
 
-	"tokenchain/x/core/types"
+	"cosmos-chain/x/core/types"
 )
 
 // AutoCLIOptions implements the autocli.HasAutoCLIConfig interface.

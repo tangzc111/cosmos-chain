@@ -5,7 +5,7 @@ import (
 	"errors"
 	"strconv"
 
-	"tokenchain/x/core/types"
+	"cosmos-chain/x/core/types"
 
 	"cosmossdk.io/collections"
 	sdk "github.com/cosmos/cosmos-sdk/types"

@@ -3,7 +3,7 @@ package types_test
 import (
 	"testing"
 
-	"tokenchain/x/core/types"
+	"cosmos-chain/x/core/types"
 
 	"github.com/stretchr/testify/require"
 )

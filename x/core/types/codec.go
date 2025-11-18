@@ -3,7 +3,7 @@ package types
 import (
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/types/msgservice"
+	txtypes "github.com/cosmos/cosmos-sdk/types/tx"
 )
 
 func RegisterInterfaces(registrar codectypes.InterfaceRegistry) {
@@ -40,5 +40,20 @@ func RegisterInterfaces(registrar codectypes.InterfaceRegistry) {
 	registrar.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgUpdateParams{},
 	)
-	msgservice.RegisterMsgServiceDesc(registrar, &_Msg_serviceDesc)
+
+	registrar.RegisterImplementations((*txtypes.MsgResponse)(nil),
+		&MsgRewardMinerResponse{},
+		&MsgTransferResponse{},
+		&MsgMintResponse{},
+		&MsgCreateBlockRecordResponse{},
+		&MsgUpdateBlockRecordResponse{},
+		&MsgDeleteBlockRecordResponse{},
+		&MsgCreateMinerResponse{},
+		&MsgUpdateMinerResponse{},
+		&MsgDeleteMinerResponse{},
+		&MsgCreateUserResponse{},
+		&MsgUpdateUserResponse{},
+		&MsgDeleteUserResponse{},
+		&MsgUpdateParamsResponse{},
+	)
 }

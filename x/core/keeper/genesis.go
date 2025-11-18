@@ -3,7 +3,7 @@ package keeper
 import (
 	"context"
 
-	"tokenchain/x/core/types"
+	"cosmos-chain/x/core/types"
 )
 
 // InitGenesis initializes the module's state from a provided genesis state.

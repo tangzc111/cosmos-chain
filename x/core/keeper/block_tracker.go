@@ -7,7 +7,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"tokenchain/x/core/types"
+	"cosmos-chain/x/core/types"
 )
 
 // BeginBlocker records basic metadata about every committed block so it can be

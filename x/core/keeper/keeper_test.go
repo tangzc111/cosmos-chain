@@ -13,9 +13,9 @@ import (
 	moduletestutil "github.com/cosmos/cosmos-sdk/types/module/testutil"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 
-	"tokenchain/x/core/keeper"
-	module "tokenchain/x/core/module"
-	"tokenchain/x/core/types"
+	"cosmos-chain/x/core/keeper"
+	module "cosmos-chain/x/core/module"
+	"cosmos-chain/x/core/types"
 )
 
 type fixture struct {

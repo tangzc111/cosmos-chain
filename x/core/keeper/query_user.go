@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	"tokenchain/x/core/types"
+	"cosmos-chain/x/core/types"
 
 	"cosmossdk.io/collections"
 	"github.com/cosmos/cosmos-sdk/types/query"
