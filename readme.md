@@ -22,14 +22,101 @@ ignite chain serve
 
 ## 常用交易命令
 
-所有命令默认通过 `cosmos-chaind` CLI 发送，`[flags]` 中至少需要 `--from <key-name>`、`--chain-id cosmos-chain` 和 `--keyring-backend test` 等签名信息。
+### 创建用户
+
+- 创建两个账号
+  ```
+    cosmos-chaind keys add laotang --keyring-backend test
+    cosmos-chaind keys add laotangtest --keyring-backend test
+  ```
+
+- 得到相应的地址、助记词
+
+  ```
+  address: cosmos1gkrhqj3mnaju7efyxwp2wqjdjk0r85ya2zu75q
+     name: laotang
+   pubkey: '{
+              "@type":"/cosmos.crypto.secp256k1.PubKey",
+              "key": "AofCE89JhO8L51a8xGXHAs64c2SLuabrLRJDs5JOxBwF"
+            }'
+     type: local
+
+  - 助记词
+  area method rapid north suit much tackle such spin uncle black connect treat express memory language useless huge major oyster clay vast laptop candy
+
+  address: cosmos1a7hjvlv6g9kr5fqvecmhc8nt7fje96g5n7vk0d
+     name: laotangtest
+   pubkey: '{"
+              @type":"/cosmos.crypto.secp256k1.PubKey","key":"AqGoREgvhaF2oNuVFsP56JmPDUdinKdoFcqJ0l03w7To"
+            }'
+     type: local
+
+  - 助记词
+  debris resource inherit safe crater average domain hollow chat because later tuition keep throw leg blade knife monkey palm alert month come sense final
+  ```
+
+- 通过系统创建的账号 alice 转一笔钱给新建账号（未通过充值转账，链上状态没有这个账号）
+  ```
+  cosmos-chaind tx bank send \
+    $(cosmos-chaind keys show alice -a --home ~/.cosmos-chain --keyring-backend test) \
+    $(cosmos-chaind keys show laotang -a --home ~/.cosmos-chain --keyring-backend test) \
+    1000000stake \
+    --from alice \
+    --gas auto --gas-adjustment 1.2 --fees 2000stake
+  ```
+
+- 通过 createUser 将账户注册到链上
+  ```
+  cosmos-chaind tx core create-user \
+    cosmos1gkrhqj3mnaju7efyxwp2wqjdjk0r85ya2zu75q \
+    cosmos1gkrhqj3mnaju7efyxwp2wqjdjk0r85ya2zu75q \
+    "laotang" "test create user" --from laotang
+  ```
+
+### 查询用户
+
+- 查看所有用户
+
+  ```
+  cosmos-chaind q core list-user
+  ```
+
+- 查询单个用户
+
+  ```
+  cosmos-chaind q core get-user cosmos1gkrhqj3mnaju7efyxwp2wqjdjk0r85ya2zu75q
+  ```
+
+- 查询用户余额
+
+  ```
+  cosmos-chaind query bank balances $(cosmos-chaind keys show laotang -a)
+  ```
+
+### 代币操作
+
+- 代币的转账
+
+  ```
+  cosmos-chaind tx core transfer cosmos1gkrhqj3mnaju7efyxwp2wqjdjk0r85ya2zu75q 50 stake --from laotangtest
+  ```
+
+- 代币的生产(增额)
+
+  ```
+  cosmos-chaind tx core mint cosmos1gkrhqj3mnaju7efyxwp2wqjdjk0r85ya2zu75q 1000 stake \
+    --from laotangtest \
+    --gas auto --gas-adjustment 1.2 --fees 2000stake
+  ```
+
+所有命令默认通过 `cosmos-chaind` CLI 发送，`[flags]` 中至少需要 `--from <key-name>`、`--chain-id cosmoschain` 和 `--keyring-backend test` 等签名信息。
 
 | 能力 | CLI 示例 |
 | --- | --- |
 | 注册用户 | `cosmos-chaind tx core create-user <bech32-address> <bech32-address> "Alice" "first operator" --from alice` |
 | 更新用户 | `cosmos-chaind tx core update-user <bech32-address> "" "new alias" "profile" --from alice` |
 | 删除用户 | `cosmos-chaind tx core delete-user <bech32-address> --from alice` |
-| 铸造代币 | `cosmos-chaind tx core mint <recipient> 1000 stake --from alice` |
+| 铸造代币 | `cosmos-chaind tx core mint <recipient> <amount> <denom> --from alice` |
 | 账户转账 | `cosmos-chaind tx core transfer <to> 50 stake --from bob` |
 | 注册矿工 | `cosmos-chaind tx core create-miner <addr> <addr> 10 "validator" --from <addr>` |
 | 更新矿工 | `cosmos-chaind tx core update-miner <addr> "" 20 "fast node" --from <addr>` |
@@ -66,50 +153,11 @@ cosmos-chaind q core get-block-record <height>
 
 对应的 REST 端点可直接用 `curl` 访问，例如：
 
-```bash
+```
+# 查询指定用户信息
 curl http://localhost:1317/cosmoschain/core/v1/user/{bech32-address}
+# 查询最新区块信息
 curl http://localhost:1317/cosmoschain/core/v1/block/latest
+# 查询在区块高度 {height} 时记录的信息
 curl "http://localhost:1317/cosmoschain/core/v1/block_record/{height}"
 ```
-
-要通过 REST 发送交易，可向 `/cosmos/tx/v1beta1/txs` 提交 `cosmoschain.core.v1` 包下的 `MsgMint`、`MsgTransfer`、`MsgRewardMiner` 等消息体。
-
-### Configure
-
-Your blockchain in development can be configured with `config.yml`. To learn more, see the [Ignite CLI docs](https://docs.ignite.com).
-
-### Web Frontend
-
-Additionally, Ignite CLI offers a frontend scaffolding feature (based on Vue) to help you quickly build a web frontend for your blockchain:
-
-Use: `ignite scaffold vue`
-This command can be run within your scaffolded blockchain project.
-
-
-For more information see the [monorepo for Ignite front-end development](https://github.com/ignite/web).
-
-## Release
-To release a new version of your blockchain, create and push a new tag with `v` prefix. A new draft release with the configured targets will be created.
-
-```
-git tag v0.1
-git push origin v0.1
-```
-
-After a draft release is created, make your final changes from the release page and publish it.
-
-### Install
-To install the latest version of your blockchain node's binary, execute the following command on your machine:
-
-```
-curl https://get.ignite.com/username/cosmos-chain@latest! | sudo bash
-```
-`username/cosmos-chain` should match the `username` and `repo_name` of the Github repository to which the source code was pushed. Learn more about [the install process](https://github.com/ignite/installer).
-
-## Learn more
-
-- [Ignite CLI](https://ignite.com/cli)
-- [Tutorials](https://docs.ignite.com/guide)
-- [Ignite CLI docs](https://docs.ignite.com)
-- [Cosmos SDK docs](https://docs.cosmos.network)
-- [Developer Chat](https://discord.com/invite/ignitecli)

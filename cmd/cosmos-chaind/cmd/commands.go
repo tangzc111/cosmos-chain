@@ -103,6 +103,8 @@ func txCommand() *cobra.Command {
 		authcmd.GetEncodeCommand(),
 		authcmd.GetDecodeCommand(),
 		authcmd.GetSimulateCmd(),
+		flags.LineBreak,
+		newCreateUserWithMnemonicCmd(),
 	)
 
 	return cmd
