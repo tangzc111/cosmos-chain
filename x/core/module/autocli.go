@@ -124,7 +124,13 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					Short:          "Send a mint tx",
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "recipient"}, {ProtoField: "amount"}, {ProtoField: "denom"}},
 				},
-				// this line is used by ignite scaffolding # autocli/tx
+				{
+			RpcMethod: "Transfer",
+			Use: "transfer [to] [amount] [denom]",
+			Short: "Send a transfer tx",
+			PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "to"}, {ProtoField: "amount"}, {ProtoField: "denom"}},
+		},
+		// this line is used by ignite scaffolding # autocli/tx
 			},
 		},
 	}
