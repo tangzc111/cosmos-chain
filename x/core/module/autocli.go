@@ -118,6 +118,12 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					Short:          "Delete block-record",
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "index"}},
 				},
+				{
+					RpcMethod:      "Mint",
+					Use:            "mint [recipient] [amount] [denom]",
+					Short:          "Send a mint tx",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "recipient"}, {ProtoField: "amount"}, {ProtoField: "denom"}},
+				},
 				// this line is used by ignite scaffolding # autocli/tx
 			},
 		},

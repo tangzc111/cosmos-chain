@@ -177,6 +177,21 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 		weightMsgDeleteBlockRecord,
 		coresimulation.SimulateMsgDeleteBlockRecord(am.authKeeper, am.bankKeeper, am.keeper, simState.TxConfig),
 	))
+	const (
+		opWeightMsgMint          = "op_weight_msg_core"
+		defaultWeightMsgMint int = 100
+	)
+
+	var weightMsgMint int
+	simState.AppParams.GetOrGenerate(opWeightMsgMint, &weightMsgMint, nil,
+		func(_ *rand.Rand) {
+			weightMsgMint = defaultWeightMsgMint
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgMint,
+		coresimulation.SimulateMsgMint(am.authKeeper, am.bankKeeper, am.keeper, simState.TxConfig),
+	))
 
 	return operations
 }

@@ -44,6 +44,9 @@ service Msg {
 
   // DeleteBlockRecord defines the DeleteBlockRecord RPC.
   rpc DeleteBlockRecord(MsgDeleteBlockRecord) returns (MsgDeleteBlockRecordResponse);
+
+  // Mint defines the Mint RPC.
+  rpc Mint(MsgMint) returns (MsgMintResponse);
 }
 
 // MsgUpdateParams is the Msg/UpdateParams request type.
@@ -178,3 +181,15 @@ message MsgDeleteBlockRecord {
 
 // MsgDeleteBlockRecordResponse defines the MsgDeleteBlockRecordResponse message.
 message MsgDeleteBlockRecordResponse {}
+
+// MsgMint defines the MsgMint message.
+message MsgMint {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string recipient = 2;
+  string amount = 3;
+  string denom = 4;
+}
+
+// MsgMintResponse defines the MsgMintResponse message.
+message MsgMintResponse {}
