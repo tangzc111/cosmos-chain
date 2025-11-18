@@ -7,8 +7,6 @@
 ignite chain serve
 ```
 
-`serve` command installs dependencies, builds, initializes, and starts your blockchain in development.
-
 ## 功能总览
 
 `core` 模块提供以下能力，满足代币和账户的闭环需求：
@@ -95,6 +93,12 @@ ignite chain serve
 
 ### 代币操作
 
+- 查询所有代币
+
+  ```
+  cosmos-chaind query bank total
+  ```
+
 - 代币的转账
 
   ```
@@ -109,6 +113,33 @@ ignite chain serve
     --gas auto --gas-adjustment 1.2 --fees 2000stake
   ```
 
+### 矿工（验证人）
+
+- 创建矿工
+
+  ```
+  cosmos-chaind tx core create-miner \
+    cosmos1gkrhqj3mnaju7efyxwp2wqjdjk0r85ya2zu75q \
+    cosmos1gkrhqj3mnaju7efyxwp2wqjdjk0r85ya2zu75q \
+    10 \
+    "validator" \
+    0stake \
+    --from laotang \
+    --gas auto --gas-adjustment 1.2 --fees 2000stake
+  ```
+
+- 查看矿工
+
+  ```
+  cosmos-chaind q core list-miner
+  ```
+
+- 发放矿工奖励
+
+ ```
+ cosmos-chaind tx core reward-miner cosmos1gkrhqj3mnaju7efyxwp2wqjdjk0r85ya2zu75q 500 stake --from laotang
+ ```
+
 所有命令默认通过 `cosmos-chaind` CLI 发送，`[flags]` 中至少需要 `--from <key-name>`、`--chain-id cosmoschain` 和 `--keyring-backend test` 等签名信息。
 
 | 能力 | CLI 示例 |
@@ -118,7 +149,7 @@ ignite chain serve
 | 删除用户 | `cosmos-chaind tx core delete-user <bech32-address> --from alice` |
 | 铸造代币 | `cosmos-chaind tx core mint <recipient> <amount> <denom> --from alice` |
 | 账户转账 | `cosmos-chaind tx core transfer <to> 50 stake --from bob` |
-| 注册矿工 | `cosmos-chaind tx core create-miner <addr> <addr> 10 "validator" --from <addr>` |
+| 注册矿工 | `cosmos-chaind tx core create-miner <addr> <addr> <power> "description" <total-reward> --from alice` |
 | 更新矿工 | `cosmos-chaind tx core update-miner <addr> "" 20 "fast node" --from <addr>` |
 | 删除矿工 | `cosmos-chaind tx core delete-miner <addr> --from <addr>` |
 | 发放矿工奖励 | `cosmos-chaind tx core reward-miner <miner-addr> 5 stake --from alice` |
@@ -132,18 +163,9 @@ ignite chain serve
 - gRPC：`localhost:9090`
 - gRPC-Gateway/REST：`http://localhost:1317`
 
-常见查询命令：
+其他查询命令：
 
 ```
-# 查看所有用户
-cosmos-chaind q core list-user
-
-# 查询单个用户
-cosmos-chaind q core get-user <bech32-address>
-
-# 查看矿工列表
-cosmos-chaind q core list-miner
-
 # 当前区块信息
 cosmos-chaind q core latest-block
 
