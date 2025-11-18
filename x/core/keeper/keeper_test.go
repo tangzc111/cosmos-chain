@@ -24,6 +24,17 @@ type fixture struct {
 	addressCodec address.Codec
 }
 
+type noopBankKeeper struct{}
+
+func (noopBankKeeper) SpendableCoins(context.Context, sdk.AccAddress) sdk.Coins { return sdk.NewCoins() }
+func (noopBankKeeper) MintCoins(context.Context, string, sdk.Coins) error      { return nil }
+func (noopBankKeeper) SendCoins(context.Context, sdk.AccAddress, sdk.AccAddress, sdk.Coins) error {
+	return nil
+}
+func (noopBankKeeper) SendCoinsFromModuleToAccount(context.Context, string, sdk.AccAddress, sdk.Coins) error {
+	return nil
+}
+
 func initFixture(t *testing.T) *fixture {
 	t.Helper()
 
@@ -40,6 +51,7 @@ func initFixture(t *testing.T) *fixture {
 		storeService,
 		encCfg.Codec,
 		addressCodec,
+		noopBankKeeper{},
 		authority,
 	)
 

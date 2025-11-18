@@ -3,7 +3,7 @@ package keeper
 import (
 	"context"
 	"errors"
-	"fmt"
+	"strconv"
 
 	"tokenchain/x/core/types"
 
@@ -13,28 +13,46 @@ import (
 )
 
 func (k msgServer) CreateMiner(ctx context.Context, msg *types.MsgCreateMiner) (*types.MsgCreateMinerResponse, error) {
-	if _, err := k.addressCodec.StringToBytes(msg.Creator); err != nil {
-		return nil, errorsmod.Wrap(sdkerrors.ErrInvalidAddress, fmt.Sprintf("invalid address: %s", err))
+	if _, err := k.mustValidAddress(msg.Creator); err != nil {
+		return nil, err
+	}
+	if _, err := k.mustValidAddress(msg.Address); err != nil {
+		return nil, err
+	}
+	if msg.Index != "" && msg.Index != msg.Address {
+		return nil, errorsmod.Wrap(sdkerrors.ErrInvalidRequest, "index must match miner address")
+	}
+	if msg.Creator != msg.Address {
+		return nil, errorsmod.Wrap(sdkerrors.ErrUnauthorized, "creator must match miner address")
+	}
+	if _, err := k.ensureUserExists(ctx, msg.Address); err != nil {
+		return nil, err
 	}
 
+	if _, err := strconv.ParseUint(msg.Power, 10, 64); err != nil {
+		return nil, errorsmod.Wrap(sdkerrors.ErrInvalidRequest, "power must be a positive integer")
+	}
+
+	key := k.normalizeUserKey(msg.Address)
+
 	// Check if the value already exists
-	ok, err := k.Miner.Has(ctx, msg.Index)
+	ok, err := k.Miner.Has(ctx, key)
 	if err != nil {
 		return nil, errorsmod.Wrap(sdkerrors.ErrLogic, err.Error())
 	} else if ok {
-		return nil, errorsmod.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
+		return nil, types.ErrMinerExists
 	}
 
 	var miner = types.Miner{
 		Creator:     msg.Creator,
-		Index:       msg.Index,
+		Index:       key,
 		Address:     msg.Address,
 		Power:       msg.Power,
 		Description: msg.Description,
-		TotalReward: msg.TotalReward,
+		TotalReward: "0",
 	}
 
-	if err := k.Miner.Set(ctx, miner.Index, miner); err != nil {
+	if err := k.Miner.Set(ctx, key, miner); err != nil {
 		return nil, errorsmod.Wrap(sdkerrors.ErrLogic, err.Error())
 	}
 
@@ -42,15 +60,17 @@ func (k msgServer) CreateMiner(ctx context.Context, msg *types.MsgCreateMiner) (
 }
 
 func (k msgServer) UpdateMiner(ctx context.Context, msg *types.MsgUpdateMiner) (*types.MsgUpdateMinerResponse, error) {
-	if _, err := k.addressCodec.StringToBytes(msg.Creator); err != nil {
-		return nil, errorsmod.Wrap(sdkerrors.ErrInvalidAddress, fmt.Sprintf("invalid signer address: %s", err))
+	if _, err := k.mustValidAddress(msg.Creator); err != nil {
+		return nil, err
 	}
 
+	key := k.normalizeUserKey(msg.Index)
+
 	// Check if the value exists
-	val, err := k.Miner.Get(ctx, msg.Index)
+	val, err := k.Miner.Get(ctx, key)
 	if err != nil {
 		if errors.Is(err, collections.ErrNotFound) {
-			return nil, errorsmod.Wrap(sdkerrors.ErrKeyNotFound, "index not set")
+			return nil, types.ErrMinerNotFound
 		}
 
 		return nil, errorsmod.Wrap(sdkerrors.ErrLogic, err.Error())
@@ -58,19 +78,25 @@ func (k msgServer) UpdateMiner(ctx context.Context, msg *types.MsgUpdateMiner) (
 
 	// Checks if the msg creator is the same as the current owner
 	if msg.Creator != val.Creator {
-		return nil, errorsmod.Wrap(sdkerrors.ErrUnauthorized, "incorrect owner")
+		return nil, errorsmod.Wrap(types.ErrUnauthorized, "incorrect owner")
 	}
 
-	var miner = types.Miner{
-		Creator:     msg.Creator,
-		Index:       msg.Index,
-		Address:     msg.Address,
-		Power:       msg.Power,
-		Description: msg.Description,
-		TotalReward: msg.TotalReward,
+	if msg.Address != "" && msg.Address != val.Address {
+		return nil, errorsmod.Wrap(sdkerrors.ErrInvalidRequest, "address cannot be updated")
 	}
 
-	if err := k.Miner.Set(ctx, miner.Index, miner); err != nil {
+	if msg.Power != "" {
+		if _, err := strconv.ParseUint(msg.Power, 10, 64); err != nil {
+			return nil, errorsmod.Wrap(sdkerrors.ErrInvalidRequest, "power must be a positive integer")
+		}
+		val.Power = msg.Power
+	}
+
+	if msg.Description != "" {
+		val.Description = msg.Description
+	}
+
+	if err := k.Miner.Set(ctx, val.Index, val); err != nil {
 		return nil, errorsmod.Wrap(sdkerrors.ErrLogic, "failed to update miner")
 	}
 
@@ -78,15 +104,15 @@ func (k msgServer) UpdateMiner(ctx context.Context, msg *types.MsgUpdateMiner) (
 }
 
 func (k msgServer) DeleteMiner(ctx context.Context, msg *types.MsgDeleteMiner) (*types.MsgDeleteMinerResponse, error) {
-	if _, err := k.addressCodec.StringToBytes(msg.Creator); err != nil {
-		return nil, errorsmod.Wrap(sdkerrors.ErrInvalidAddress, fmt.Sprintf("invalid signer address: %s", err))
+	if _, err := k.mustValidAddress(msg.Creator); err != nil {
+		return nil, err
 	}
 
 	// Check if the value exists
-	val, err := k.Miner.Get(ctx, msg.Index)
+	val, err := k.Miner.Get(ctx, k.normalizeUserKey(msg.Index))
 	if err != nil {
 		if errors.Is(err, collections.ErrNotFound) {
-			return nil, errorsmod.Wrap(sdkerrors.ErrKeyNotFound, "index not set")
+			return nil, types.ErrMinerNotFound
 		}
 
 		return nil, errorsmod.Wrap(sdkerrors.ErrLogic, err.Error())
@@ -94,10 +120,10 @@ func (k msgServer) DeleteMiner(ctx context.Context, msg *types.MsgDeleteMiner) (
 
 	// Checks if the msg creator is the same as the current owner
 	if msg.Creator != val.Creator {
-		return nil, errorsmod.Wrap(sdkerrors.ErrUnauthorized, "incorrect owner")
+		return nil, errorsmod.Wrap(types.ErrUnauthorized, "incorrect owner")
 	}
 
-	if err := k.Miner.Remove(ctx, msg.Index); err != nil {
+	if err := k.Miner.Remove(ctx, val.Index); err != nil {
 		return nil, errorsmod.Wrap(sdkerrors.ErrLogic, "failed to remove miner")
 	}
 

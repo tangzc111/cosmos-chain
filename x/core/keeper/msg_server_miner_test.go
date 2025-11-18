@@ -1,7 +1,7 @@
 package keeper_test
 
 import (
-	"strconv"
+	"fmt"
 	"testing"
 
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -14,14 +14,27 @@ import (
 func TestMinerMsgServerCreate(t *testing.T) {
 	f := initFixture(t)
 	srv := keeper.NewMsgServerImpl(f.keeper)
-	creator, err := f.addressCodec.BytesToString([]byte("signerAddr__________________"))
-	require.NoError(t, err)
 
 	for i := 0; i < 5; i++ {
-		expected := &types.MsgCreateMiner{Creator: creator,
-			Index: strconv.Itoa(i),
+		addr, err := f.addressCodec.BytesToString([]byte(fmt.Sprintf("minerAddr_%02d_____________", i)))
+		require.NoError(t, err)
+		_, err = srv.CreateUser(f.ctx, &types.MsgCreateUser{
+			Creator:     addr,
+			Index:       addr,
+			Address:     addr,
+			Username:    fmt.Sprintf("miner-%d", i),
+			Description: "miner",
+		})
+		require.NoError(t, err)
+
+		expected := &types.MsgCreateMiner{
+			Creator:     addr,
+			Index:       addr,
+			Address:     addr,
+			Power:       "1",
+			Description: "miner",
 		}
-		_, err := srv.CreateMiner(f.ctx, expected)
+		_, err = srv.CreateMiner(f.ctx, expected)
 		require.NoError(t, err)
 		rst, err := f.keeper.Miner.Get(f.ctx, expected.Index)
 		require.NoError(t, err)
@@ -33,14 +46,30 @@ func TestMinerMsgServerUpdate(t *testing.T) {
 	f := initFixture(t)
 	srv := keeper.NewMsgServerImpl(f.keeper)
 
-	creator, err := f.addressCodec.BytesToString([]byte("signerAddr__________________"))
+	creator, err := f.addressCodec.BytesToString([]byte("minerAddr_creator__________"))
 	require.NoError(t, err)
 
 	unauthorizedAddr, err := f.addressCodec.BytesToString([]byte("unauthorizedAddr___________"))
 	require.NoError(t, err)
 
-	expected := &types.MsgCreateMiner{Creator: creator,
-		Index: strconv.Itoa(0),
+	missingMiner, err := f.addressCodec.BytesToString([]byte("missingMiner______________"))
+	require.NoError(t, err)
+
+	_, err = srv.CreateUser(f.ctx, &types.MsgCreateUser{
+		Creator:     creator,
+		Index:       creator,
+		Address:     creator,
+		Username:    "miner-owner",
+		Description: "miner",
+	})
+	require.NoError(t, err)
+
+	expected := &types.MsgCreateMiner{
+		Creator:     creator,
+		Index:       creator,
+		Address:     creator,
+		Power:       "1",
+		Description: "miner",
 	}
 	_, err = srv.CreateMiner(f.ctx, expected)
 	require.NoError(t, err)
@@ -53,28 +82,29 @@ func TestMinerMsgServerUpdate(t *testing.T) {
 		{
 			desc: "invalid address",
 			request: &types.MsgUpdateMiner{Creator: "invalid",
-				Index: strconv.Itoa(0),
+				Index: creator,
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		},
 		{
 			desc: "unauthorized",
 			request: &types.MsgUpdateMiner{Creator: unauthorizedAddr,
-				Index: strconv.Itoa(0),
+				Index: creator,
 			},
-			err: sdkerrors.ErrUnauthorized,
+			err: types.ErrUnauthorized,
 		},
 		{
 			desc: "key not found",
 			request: &types.MsgUpdateMiner{Creator: creator,
-				Index: strconv.Itoa(100000),
+				Index: missingMiner,
 			},
-			err: sdkerrors.ErrKeyNotFound,
+			err: types.ErrMinerNotFound,
 		},
 		{
 			desc: "completed",
 			request: &types.MsgUpdateMiner{Creator: creator,
-				Index: strconv.Itoa(0),
+				Index: creator,
+				Power: "5",
 			},
 		},
 	}
@@ -97,14 +127,30 @@ func TestMinerMsgServerDelete(t *testing.T) {
 	f := initFixture(t)
 	srv := keeper.NewMsgServerImpl(f.keeper)
 
-	creator, err := f.addressCodec.BytesToString([]byte("signerAddr__________________"))
+	creator, err := f.addressCodec.BytesToString([]byte("minerAddr_creator__________"))
 	require.NoError(t, err)
 
 	unauthorizedAddr, err := f.addressCodec.BytesToString([]byte("unauthorizedAddr___________"))
 	require.NoError(t, err)
 
-	_, err = srv.CreateMiner(f.ctx, &types.MsgCreateMiner{Creator: creator,
-		Index: strconv.Itoa(0),
+	missingMiner, err := f.addressCodec.BytesToString([]byte("missingMiner______________"))
+	require.NoError(t, err)
+
+	_, err = srv.CreateUser(f.ctx, &types.MsgCreateUser{
+		Creator:     creator,
+		Index:       creator,
+		Address:     creator,
+		Username:    "miner-owner",
+		Description: "miner",
+	})
+	require.NoError(t, err)
+
+	_, err = srv.CreateMiner(f.ctx, &types.MsgCreateMiner{
+		Creator:     creator,
+		Index:       creator,
+		Address:     creator,
+		Power:       "1",
+		Description: "miner",
 	})
 	require.NoError(t, err)
 
@@ -116,28 +162,28 @@ func TestMinerMsgServerDelete(t *testing.T) {
 		{
 			desc: "invalid address",
 			request: &types.MsgDeleteMiner{Creator: "invalid",
-				Index: strconv.Itoa(0),
+				Index: creator,
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		},
 		{
 			desc: "unauthorized",
 			request: &types.MsgDeleteMiner{Creator: unauthorizedAddr,
-				Index: strconv.Itoa(0),
+				Index: creator,
 			},
-			err: sdkerrors.ErrUnauthorized,
+			err: types.ErrUnauthorized,
 		},
 		{
 			desc: "key not found",
 			request: &types.MsgDeleteMiner{Creator: creator,
-				Index: strconv.Itoa(100000),
+				Index: missingMiner,
 			},
-			err: sdkerrors.ErrKeyNotFound,
+			err: types.ErrMinerNotFound,
 		},
 		{
 			desc: "completed",
 			request: &types.MsgDeleteMiner{Creator: creator,
-				Index: strconv.Itoa(0),
+				Index: creator,
 			},
 		},
 	}

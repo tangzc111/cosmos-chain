@@ -3,10 +3,12 @@ package keeper
 import (
 	"context"
 	"errors"
+	"strconv"
 
 	"tokenchain/x/core/types"
 
 	"cosmossdk.io/collections"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -47,4 +49,24 @@ func (q queryServer) GetBlockRecord(ctx context.Context, req *types.QueryGetBloc
 	}
 
 	return &types.QueryGetBlockRecordResponse{BlockRecord: val}, nil
+}
+
+func (q queryServer) LatestBlock(ctx context.Context, req *types.QueryLatestBlockRequest) (*types.QueryLatestBlockResponse, error) {
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
+
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+	heightKey := strconv.FormatInt(sdkCtx.BlockHeight(), 10)
+
+	record, err := q.k.BlockRecord.Get(ctx, heightKey)
+	if err != nil {
+		if errors.Is(err, collections.ErrNotFound) {
+			return nil, status.Error(codes.NotFound, types.ErrBlockNotTracked.Error())
+		}
+
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	return &types.QueryLatestBlockResponse{BlockRecord: record}, nil
 }
