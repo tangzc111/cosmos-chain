@@ -6,6 +6,7 @@ import "amino/amino.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
+import "tokenchain/core/v1/miner.proto";
 import "tokenchain/core/v1/params.proto";
 import "tokenchain/core/v1/user.proto";
 
@@ -26,6 +27,16 @@ service Query {
   // ListUser defines the ListUser RPC.
   rpc ListUser(QueryAllUserRequest) returns (QueryAllUserResponse) {
     option (google.api.http).get = "/tokenchain/core/v1/user";
+  }
+
+  // ListMiner Queries a list of Miner items.
+  rpc GetMiner(QueryGetMinerRequest) returns (QueryGetMinerResponse) {
+    option (google.api.http).get = "/tokenchain/core/v1/miner/{index}";
+  }
+
+  // ListMiner defines the ListMiner RPC.
+  rpc ListMiner(QueryAllMinerRequest) returns (QueryAllMinerResponse) {
+    option (google.api.http).get = "/tokenchain/core/v1/miner";
   }
 }
 
@@ -59,5 +70,26 @@ message QueryAllUserRequest {
 // QueryAllUserResponse defines the QueryAllUserResponse message.
 message QueryAllUserResponse {
   repeated User user = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryGetMinerRequest defines the QueryGetMinerRequest message.
+message QueryGetMinerRequest {
+  string index = 1;
+}
+
+// QueryGetMinerResponse defines the QueryGetMinerResponse message.
+message QueryGetMinerResponse {
+  Miner miner = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryAllMinerRequest defines the QueryAllMinerRequest message.
+message QueryAllMinerRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+// QueryAllMinerResponse defines the QueryAllMinerResponse message.
+message QueryAllMinerResponse {
+  repeated Miner miner = 1 [(gogoproto.nullable) = false];
   cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }

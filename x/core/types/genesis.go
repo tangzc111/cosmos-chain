@@ -6,7 +6,7 @@ import "fmt"
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		Params:  DefaultParams(),
-		UserMap: []User{}}
+		UserMap: []User{}, MinerMap: []Miner{}}
 }
 
 // Validate performs basic genesis state validation returning an error upon any
@@ -20,6 +20,15 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("duplicated index for user")
 		}
 		userIndexMap[index] = struct{}{}
+	}
+	minerIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.MinerMap {
+		index := fmt.Sprint(elem.Index)
+		if _, ok := minerIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for miner")
+		}
+		minerIndexMap[index] = struct{}{}
 	}
 
 	return gs.Params.Validate()

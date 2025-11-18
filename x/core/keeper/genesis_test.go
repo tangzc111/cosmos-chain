@@ -12,7 +12,7 @@ func TestGenesis(t *testing.T) {
 	genesisState := types.GenesisState{
 		Params: types.DefaultParams(),
 
-		UserMap: []types.User{{Index: "0"}, {Index: "1"}}}
+		UserMap: []types.User{{Index: "0"}, {Index: "1"}}, MinerMap: []types.Miner{{Index: "0"}, {Index: "1"}}}
 
 	f := initFixture(t)
 	err := f.keeper.InitGenesis(f.ctx, genesisState)
@@ -23,5 +23,6 @@ func TestGenesis(t *testing.T) {
 
 	require.EqualExportedValues(t, genesisState.Params, got.Params)
 	require.EqualExportedValues(t, genesisState.UserMap, got.UserMap)
+	require.EqualExportedValues(t, genesisState.MinerMap, got.MinerMap)
 
 }

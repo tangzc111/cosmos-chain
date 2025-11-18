@@ -26,6 +26,15 @@ service Msg {
 
   // DeleteUser defines the DeleteUser RPC.
   rpc DeleteUser(MsgDeleteUser) returns (MsgDeleteUserResponse);
+
+  // CreateMiner defines the CreateMiner RPC.
+  rpc CreateMiner(MsgCreateMiner) returns (MsgCreateMinerResponse);
+
+  // UpdateMiner defines the UpdateMiner RPC.
+  rpc UpdateMiner(MsgUpdateMiner) returns (MsgUpdateMinerResponse);
+
+  // DeleteMiner defines the DeleteMiner RPC.
+  rpc DeleteMiner(MsgDeleteMiner) returns (MsgDeleteMinerResponse);
 }
 
 // MsgUpdateParams is the Msg/UpdateParams request type.
@@ -84,3 +93,41 @@ message MsgDeleteUser {
 
 // MsgDeleteUserResponse defines the MsgDeleteUserResponse message.
 message MsgDeleteUserResponse {}
+
+// MsgCreateMiner defines the MsgCreateMiner message.
+message MsgCreateMiner {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string index = 2;
+  string address = 3;
+  string power = 4;
+  string description = 5;
+  string total_reward = 6;
+}
+
+// MsgCreateMinerResponse defines the MsgCreateMinerResponse message.
+message MsgCreateMinerResponse {}
+
+// MsgUpdateMiner defines the MsgUpdateMiner message.
+message MsgUpdateMiner {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string index = 2;
+  string address = 3;
+  string power = 4;
+  string description = 5;
+  string total_reward = 6;
+}
+
+// MsgUpdateMinerResponse defines the MsgUpdateMinerResponse message.
+message MsgUpdateMinerResponse {}
+
+// MsgDeleteMiner defines the MsgDeleteMiner message.
+message MsgDeleteMiner {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string index = 2;
+}
+
+// MsgDeleteMinerResponse defines the MsgDeleteMinerResponse message.
+message MsgDeleteMinerResponse {}

@@ -29,6 +29,18 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					Alias:          []string{"show-user"},
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "index"}},
 				},
+				{
+					RpcMethod: "ListMiner",
+					Use:       "list-miner",
+					Short:     "List all miner",
+				},
+				{
+					RpcMethod:      "GetMiner",
+					Use:            "get-miner [id]",
+					Short:          "Gets a miner",
+					Alias:          []string{"show-miner"},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "index"}},
+				},
 				// this line is used by ignite scaffolding # autocli/query
 			},
 		},
@@ -56,6 +68,24 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					RpcMethod:      "DeleteUser",
 					Use:            "delete-user [index]",
 					Short:          "Delete user",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "index"}},
+				},
+				{
+					RpcMethod:      "CreateMiner",
+					Use:            "create-miner [index] [address] [power] [description] [total-reward]",
+					Short:          "Create a new miner",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "index"}, {ProtoField: "address"}, {ProtoField: "power"}, {ProtoField: "description"}, {ProtoField: "total_reward"}},
+				},
+				{
+					RpcMethod:      "UpdateMiner",
+					Use:            "update-miner [index] [address] [power] [description] [total-reward]",
+					Short:          "Update miner",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "index"}, {ProtoField: "address"}, {ProtoField: "power"}, {ProtoField: "description"}, {ProtoField: "total_reward"}},
+				},
+				{
+					RpcMethod:      "DeleteMiner",
+					Use:            "delete-miner [index]",
+					Short:          "Delete miner",
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "index"}},
 				},
 				// this line is used by ignite scaffolding # autocli/tx

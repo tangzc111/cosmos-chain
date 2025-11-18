@@ -23,12 +23,25 @@ func TestGenesisState_Validate(t *testing.T) {
 			desc: "valid genesis state",
 			genState: &types.GenesisState{
 
-				UserMap: []types.User{{Index: "0"}, {Index: "1"}}},
+				UserMap: []types.User{{Index: "0"}, {Index: "1"}}, MinerMap: []types.Miner{{Index: "0"}, {Index: "1"}}},
 			valid: true,
 		}, {
 			desc: "duplicated user",
 			genState: &types.GenesisState{
 				UserMap: []types.User{
+					{
+						Index: "0",
+					},
+					{
+						Index: "0",
+					},
+				},
+				MinerMap: []types.Miner{{Index: "0"}, {Index: "1"}}},
+			valid: false,
+		}, {
+			desc: "duplicated miner",
+			genState: &types.GenesisState{
+				MinerMap: []types.Miner{
 					{
 						Index: "0",
 					},

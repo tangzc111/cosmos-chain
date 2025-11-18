@@ -13,6 +13,11 @@ func (k Keeper) InitGenesis(ctx context.Context, genState types.GenesisState) er
 			return err
 		}
 	}
+	for _, elem := range genState.MinerMap {
+		if err := k.Miner.Set(ctx, elem.Index, elem); err != nil {
+			return err
+		}
+	}
 
 	return k.Params.Set(ctx, genState.Params)
 }
@@ -28,6 +33,12 @@ func (k Keeper) ExportGenesis(ctx context.Context) (*types.GenesisState, error) 
 	}
 	if err := k.User.Walk(ctx, nil, func(_ string, val types.User) (stop bool, err error) {
 		genesis.UserMap = append(genesis.UserMap, val)
+		return false, nil
+	}); err != nil {
+		return nil, err
+	}
+	if err := k.Miner.Walk(ctx, nil, func(_ string, val types.Miner) (stop bool, err error) {
+		genesis.MinerMap = append(genesis.MinerMap, val)
 		return false, nil
 	}); err != nil {
 		return nil, err

@@ -1,0 +1,14 @@
+syntax = "proto3";
+package tokenchain.core.v1;
+
+option go_package = "tokenchain/x/core/types";
+
+// Miner defines the Miner message.
+message Miner {
+  string index = 1;
+  string address = 2;
+  string power = 3;
+  string description = 4;
+  string total_reward = 5;
+  string creator = 6;
+}

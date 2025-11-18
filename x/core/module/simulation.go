@@ -24,6 +24,10 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 			Index: "0",
 		}, {Creator: sample.AccAddress(),
 			Index: "1",
+		}}, MinerMap: []types.Miner{{Creator: sample.AccAddress(),
+			Index: "0",
+		}, {Creator: sample.AccAddress(),
+			Index: "1",
 		}}}
 	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&coreGenesis)
 }
@@ -78,6 +82,51 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgDeleteUser,
 		coresimulation.SimulateMsgDeleteUser(am.authKeeper, am.bankKeeper, am.keeper, simState.TxConfig),
+	))
+	const (
+		opWeightMsgCreateMiner          = "op_weight_msg_core"
+		defaultWeightMsgCreateMiner int = 100
+	)
+
+	var weightMsgCreateMiner int
+	simState.AppParams.GetOrGenerate(opWeightMsgCreateMiner, &weightMsgCreateMiner, nil,
+		func(_ *rand.Rand) {
+			weightMsgCreateMiner = defaultWeightMsgCreateMiner
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgCreateMiner,
+		coresimulation.SimulateMsgCreateMiner(am.authKeeper, am.bankKeeper, am.keeper, simState.TxConfig),
+	))
+	const (
+		opWeightMsgUpdateMiner          = "op_weight_msg_core"
+		defaultWeightMsgUpdateMiner int = 100
+	)
+
+	var weightMsgUpdateMiner int
+	simState.AppParams.GetOrGenerate(opWeightMsgUpdateMiner, &weightMsgUpdateMiner, nil,
+		func(_ *rand.Rand) {
+			weightMsgUpdateMiner = defaultWeightMsgUpdateMiner
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgUpdateMiner,
+		coresimulation.SimulateMsgUpdateMiner(am.authKeeper, am.bankKeeper, am.keeper, simState.TxConfig),
+	))
+	const (
+		opWeightMsgDeleteMiner          = "op_weight_msg_core"
+		defaultWeightMsgDeleteMiner int = 100
+	)
+
+	var weightMsgDeleteMiner int
+	simState.AppParams.GetOrGenerate(opWeightMsgDeleteMiner, &weightMsgDeleteMiner, nil,
+		func(_ *rand.Rand) {
+			weightMsgDeleteMiner = defaultWeightMsgDeleteMiner
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgDeleteMiner,
+		coresimulation.SimulateMsgDeleteMiner(am.authKeeper, am.bankKeeper, am.keeper, simState.TxConfig),
 	))
 
 	return operations
