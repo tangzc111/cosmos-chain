@@ -1,0 +1,14 @@
+syntax = "proto3";
+package tokenchain.core.v1;
+
+option go_package = "tokenchain/x/core/types";
+
+// BlockRecord defines the BlockRecord message.
+message BlockRecord {
+  string index = 1;
+  string height = 2;
+  string hash = 3;
+  string proposer = 4;
+  string time = 5;
+  string creator = 6;
+}

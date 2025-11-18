@@ -8,6 +8,12 @@ import (
 
 func RegisterInterfaces(registrar codectypes.InterfaceRegistry) {
 	registrar.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgCreateBlockRecord{},
+		&MsgUpdateBlockRecord{},
+		&MsgDeleteBlockRecord{},
+	)
+
+	registrar.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgCreateMiner{},
 		&MsgUpdateMiner{},
 		&MsgDeleteMiner{},

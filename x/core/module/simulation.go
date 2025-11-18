@@ -28,6 +28,10 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 			Index: "0",
 		}, {Creator: sample.AccAddress(),
 			Index: "1",
+		}}, BlockRecordMap: []types.BlockRecord{{Creator: sample.AccAddress(),
+			Index: "0",
+		}, {Creator: sample.AccAddress(),
+			Index: "1",
 		}}}
 	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&coreGenesis)
 }
@@ -127,6 +131,51 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgDeleteMiner,
 		coresimulation.SimulateMsgDeleteMiner(am.authKeeper, am.bankKeeper, am.keeper, simState.TxConfig),
+	))
+	const (
+		opWeightMsgCreateBlockRecord          = "op_weight_msg_core"
+		defaultWeightMsgCreateBlockRecord int = 100
+	)
+
+	var weightMsgCreateBlockRecord int
+	simState.AppParams.GetOrGenerate(opWeightMsgCreateBlockRecord, &weightMsgCreateBlockRecord, nil,
+		func(_ *rand.Rand) {
+			weightMsgCreateBlockRecord = defaultWeightMsgCreateBlockRecord
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgCreateBlockRecord,
+		coresimulation.SimulateMsgCreateBlockRecord(am.authKeeper, am.bankKeeper, am.keeper, simState.TxConfig),
+	))
+	const (
+		opWeightMsgUpdateBlockRecord          = "op_weight_msg_core"
+		defaultWeightMsgUpdateBlockRecord int = 100
+	)
+
+	var weightMsgUpdateBlockRecord int
+	simState.AppParams.GetOrGenerate(opWeightMsgUpdateBlockRecord, &weightMsgUpdateBlockRecord, nil,
+		func(_ *rand.Rand) {
+			weightMsgUpdateBlockRecord = defaultWeightMsgUpdateBlockRecord
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgUpdateBlockRecord,
+		coresimulation.SimulateMsgUpdateBlockRecord(am.authKeeper, am.bankKeeper, am.keeper, simState.TxConfig),
+	))
+	const (
+		opWeightMsgDeleteBlockRecord          = "op_weight_msg_core"
+		defaultWeightMsgDeleteBlockRecord int = 100
+	)
+
+	var weightMsgDeleteBlockRecord int
+	simState.AppParams.GetOrGenerate(opWeightMsgDeleteBlockRecord, &weightMsgDeleteBlockRecord, nil,
+		func(_ *rand.Rand) {
+			weightMsgDeleteBlockRecord = defaultWeightMsgDeleteBlockRecord
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgDeleteBlockRecord,
+		coresimulation.SimulateMsgDeleteBlockRecord(am.authKeeper, am.bankKeeper, am.keeper, simState.TxConfig),
 	))
 
 	return operations

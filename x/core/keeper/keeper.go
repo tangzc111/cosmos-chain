@@ -19,10 +19,11 @@ type Keeper struct {
 	// Typically, this should be the x/gov module account.
 	authority []byte
 
-	Schema collections.Schema
-	Params collections.Item[types.Params]
-	User   collections.Map[string, types.User]
-	Miner  collections.Map[string, types.Miner]
+	Schema      collections.Schema
+	Params      collections.Item[types.Params]
+	User        collections.Map[string, types.User]
+	Miner       collections.Map[string, types.Miner]
+	BlockRecord collections.Map[string, types.BlockRecord]
 }
 
 func NewKeeper(
@@ -45,7 +46,7 @@ func NewKeeper(
 		authority:    authority,
 
 		Params: collections.NewItem(sb, types.ParamsKey, "params", codec.CollValue[types.Params](cdc)),
-		User:   collections.NewMap(sb, types.UserKey, "user", collections.StringKey, codec.CollValue[types.User](cdc)), Miner: collections.NewMap(sb, types.MinerKey, "miner", collections.StringKey, codec.CollValue[types.Miner](cdc))}
+		User:   collections.NewMap(sb, types.UserKey, "user", collections.StringKey, codec.CollValue[types.User](cdc)), Miner: collections.NewMap(sb, types.MinerKey, "miner", collections.StringKey, codec.CollValue[types.Miner](cdc)), BlockRecord: collections.NewMap(sb, types.BlockRecordKey, "blockRecord", collections.StringKey, codec.CollValue[types.BlockRecord](cdc))}
 
 	schema, err := sb.Build()
 	if err != nil {

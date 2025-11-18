@@ -6,6 +6,7 @@ import "amino/amino.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
+import "tokenchain/core/v1/block_record.proto";
 import "tokenchain/core/v1/miner.proto";
 import "tokenchain/core/v1/params.proto";
 import "tokenchain/core/v1/user.proto";
@@ -37,6 +38,16 @@ service Query {
   // ListMiner defines the ListMiner RPC.
   rpc ListMiner(QueryAllMinerRequest) returns (QueryAllMinerResponse) {
     option (google.api.http).get = "/tokenchain/core/v1/miner";
+  }
+
+  // ListBlockRecord Queries a list of BlockRecord items.
+  rpc GetBlockRecord(QueryGetBlockRecordRequest) returns (QueryGetBlockRecordResponse) {
+    option (google.api.http).get = "/tokenchain/core/v1/block_record/{index}";
+  }
+
+  // ListBlockRecord defines the ListBlockRecord RPC.
+  rpc ListBlockRecord(QueryAllBlockRecordRequest) returns (QueryAllBlockRecordResponse) {
+    option (google.api.http).get = "/tokenchain/core/v1/block_record";
   }
 }
 
@@ -91,5 +102,26 @@ message QueryAllMinerRequest {
 // QueryAllMinerResponse defines the QueryAllMinerResponse message.
 message QueryAllMinerResponse {
   repeated Miner miner = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryGetBlockRecordRequest defines the QueryGetBlockRecordRequest message.
+message QueryGetBlockRecordRequest {
+  string index = 1;
+}
+
+// QueryGetBlockRecordResponse defines the QueryGetBlockRecordResponse message.
+message QueryGetBlockRecordResponse {
+  BlockRecord block_record = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryAllBlockRecordRequest defines the QueryAllBlockRecordRequest message.
+message QueryAllBlockRecordRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+// QueryAllBlockRecordResponse defines the QueryAllBlockRecordResponse message.
+message QueryAllBlockRecordResponse {
+  repeated BlockRecord block_record = 1 [(gogoproto.nullable) = false];
   cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }

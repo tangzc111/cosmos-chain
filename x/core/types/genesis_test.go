@@ -23,7 +23,7 @@ func TestGenesisState_Validate(t *testing.T) {
 			desc: "valid genesis state",
 			genState: &types.GenesisState{
 
-				UserMap: []types.User{{Index: "0"}, {Index: "1"}}, MinerMap: []types.Miner{{Index: "0"}, {Index: "1"}}},
+				UserMap: []types.User{{Index: "0"}, {Index: "1"}}, MinerMap: []types.Miner{{Index: "0"}, {Index: "1"}}, BlockRecordMap: []types.BlockRecord{{Index: "0"}, {Index: "1"}}},
 			valid: true,
 		}, {
 			desc: "duplicated user",
@@ -36,12 +36,25 @@ func TestGenesisState_Validate(t *testing.T) {
 						Index: "0",
 					},
 				},
-				MinerMap: []types.Miner{{Index: "0"}, {Index: "1"}}},
+				MinerMap: []types.Miner{{Index: "0"}, {Index: "1"}}, BlockRecordMap: []types.BlockRecord{{Index: "0"}, {Index: "1"}}},
 			valid: false,
 		}, {
 			desc: "duplicated miner",
 			genState: &types.GenesisState{
 				MinerMap: []types.Miner{
+					{
+						Index: "0",
+					},
+					{
+						Index: "0",
+					},
+				},
+				BlockRecordMap: []types.BlockRecord{{Index: "0"}, {Index: "1"}}},
+			valid: false,
+		}, {
+			desc: "duplicated blockRecord",
+			genState: &types.GenesisState{
+				BlockRecordMap: []types.BlockRecord{
 					{
 						Index: "0",
 					},

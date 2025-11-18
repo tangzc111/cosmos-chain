@@ -35,6 +35,15 @@ service Msg {
 
   // DeleteMiner defines the DeleteMiner RPC.
   rpc DeleteMiner(MsgDeleteMiner) returns (MsgDeleteMinerResponse);
+
+  // CreateBlockRecord defines the CreateBlockRecord RPC.
+  rpc CreateBlockRecord(MsgCreateBlockRecord) returns (MsgCreateBlockRecordResponse);
+
+  // UpdateBlockRecord defines the UpdateBlockRecord RPC.
+  rpc UpdateBlockRecord(MsgUpdateBlockRecord) returns (MsgUpdateBlockRecordResponse);
+
+  // DeleteBlockRecord defines the DeleteBlockRecord RPC.
+  rpc DeleteBlockRecord(MsgDeleteBlockRecord) returns (MsgDeleteBlockRecordResponse);
 }
 
 // MsgUpdateParams is the Msg/UpdateParams request type.
@@ -131,3 +140,41 @@ message MsgDeleteMiner {
 
 // MsgDeleteMinerResponse defines the MsgDeleteMinerResponse message.
 message MsgDeleteMinerResponse {}
+
+// MsgCreateBlockRecord defines the MsgCreateBlockRecord message.
+message MsgCreateBlockRecord {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string index = 2;
+  string height = 3;
+  string hash = 4;
+  string proposer = 5;
+  string time = 6;
+}
+
+// MsgCreateBlockRecordResponse defines the MsgCreateBlockRecordResponse message.
+message MsgCreateBlockRecordResponse {}
+
+// MsgUpdateBlockRecord defines the MsgUpdateBlockRecord message.
+message MsgUpdateBlockRecord {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string index = 2;
+  string height = 3;
+  string hash = 4;
+  string proposer = 5;
+  string time = 6;
+}
+
+// MsgUpdateBlockRecordResponse defines the MsgUpdateBlockRecordResponse message.
+message MsgUpdateBlockRecordResponse {}
+
+// MsgDeleteBlockRecord defines the MsgDeleteBlockRecord message.
+message MsgDeleteBlockRecord {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string index = 2;
+}
+
+// MsgDeleteBlockRecordResponse defines the MsgDeleteBlockRecordResponse message.
+message MsgDeleteBlockRecordResponse {}

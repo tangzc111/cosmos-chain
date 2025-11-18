@@ -41,6 +41,18 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					Alias:          []string{"show-miner"},
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "index"}},
 				},
+				{
+					RpcMethod: "ListBlockRecord",
+					Use:       "list-block-record",
+					Short:     "List all block-record",
+				},
+				{
+					RpcMethod:      "GetBlockRecord",
+					Use:            "get-block-record [id]",
+					Short:          "Gets a block-record",
+					Alias:          []string{"show-block-record"},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "index"}},
+				},
 				// this line is used by ignite scaffolding # autocli/query
 			},
 		},
@@ -86,6 +98,24 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					RpcMethod:      "DeleteMiner",
 					Use:            "delete-miner [index]",
 					Short:          "Delete miner",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "index"}},
+				},
+				{
+					RpcMethod:      "CreateBlockRecord",
+					Use:            "create-block-record [index] [height] [hash] [proposer] [time]",
+					Short:          "Create a new block-record",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "index"}, {ProtoField: "height"}, {ProtoField: "hash"}, {ProtoField: "proposer"}, {ProtoField: "time"}},
+				},
+				{
+					RpcMethod:      "UpdateBlockRecord",
+					Use:            "update-block-record [index] [height] [hash] [proposer] [time]",
+					Short:          "Update block-record",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "index"}, {ProtoField: "height"}, {ProtoField: "hash"}, {ProtoField: "proposer"}, {ProtoField: "time"}},
+				},
+				{
+					RpcMethod:      "DeleteBlockRecord",
+					Use:            "delete-block-record [index]",
+					Short:          "Delete block-record",
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "index"}},
 				},
 				// this line is used by ignite scaffolding # autocli/tx
