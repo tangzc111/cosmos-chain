@@ -12,7 +12,7 @@ import (
 	"tokenchain/x/core/types"
 )
 
-func SimulateMsgTransfer(
+func SimulateMsgRewardMiner(
 	ak types.AuthKeeper,
 	bk types.BankKeeper,
 	k keeper.Keeper,
@@ -21,12 +21,12 @@ func SimulateMsgTransfer(
 	return func(r *rand.Rand, app *baseapp.BaseApp, ctx sdk.Context, accs []simtypes.Account, chainID string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		simAccount, _ := simtypes.RandomAcc(r, accs)
-		msg := &types.MsgTransfer{
+		msg := &types.MsgRewardMiner{
 			Creator: simAccount.Address.String(),
 		}
 
-		// TODO: Handle the Transfer simulation
+		// TODO: Handle the RewardMiner simulation
 
-		return simtypes.NoOpMsg(types.ModuleName, sdk.MsgTypeURL(msg), "Transfer simulation not implemented"), nil, nil
+		return simtypes.NoOpMsg(types.ModuleName, sdk.MsgTypeURL(msg), "RewardMiner simulation not implemented"), nil, nil
 	}
 }

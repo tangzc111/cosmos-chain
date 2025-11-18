@@ -1,10 +1,11 @@
 package core
 
 import (
+	"math/rand"
+
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
-	"math/rand"
 
 	"tokenchain/testutil/sample"
 	coresimulation "tokenchain/x/core/simulation"
@@ -205,6 +206,21 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgTransfer,
 		coresimulation.SimulateMsgTransfer(am.authKeeper, am.bankKeeper, am.keeper, simState.TxConfig),
+	))
+	const (
+		opWeightMsgRewardMiner          = "op_weight_msg_core"
+		defaultWeightMsgRewardMiner int = 100
+	)
+
+	var weightMsgRewardMiner int
+	simState.AppParams.GetOrGenerate(opWeightMsgRewardMiner, &weightMsgRewardMiner, nil,
+		func(_ *rand.Rand) {
+			weightMsgRewardMiner = defaultWeightMsgRewardMiner
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgRewardMiner,
+		coresimulation.SimulateMsgRewardMiner(am.authKeeper, am.bankKeeper, am.keeper, simState.TxConfig),
 	))
 
 	return operations
