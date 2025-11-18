@@ -17,6 +17,7 @@ require (
 	cosmossdk.io/collections v1.2.1
 	cosmossdk.io/core v0.11.3
 	cosmossdk.io/depinject v1.2.1
+	cosmossdk.io/errors v1.0.2
 	cosmossdk.io/log v1.6.1
 	cosmossdk.io/math v1.5.3
 	cosmossdk.io/store v1.1.2
@@ -31,11 +32,13 @@ require (
 	github.com/cosmos/cosmos-sdk v0.53.4
 	github.com/cosmos/ibc-go/v10 v10.4.0
 	github.com/gorilla/mux v1.8.1
+	github.com/grpc-ecosystem/grpc-gateway v1.16.0
 	github.com/spf13/cast v1.9.2
 	github.com/spf13/cobra v1.10.1
 	github.com/spf13/pflag v1.0.10
 	github.com/spf13/viper v1.20.1
 	github.com/stretchr/testify v1.11.1
+	google.golang.org/grpc v1.75.1
 	google.golang.org/protobuf v1.36.10
 )
 
@@ -66,7 +69,6 @@ require (
 	cloud.google.com/go/storage v1.49.0 // indirect
 	connectrpc.com/connect v1.19.1 // indirect
 	connectrpc.com/otelconnect v0.8.0 // indirect
-	cosmossdk.io/errors v1.0.2 // indirect
 	cosmossdk.io/schema v1.1.0 // indirect
 	cosmossdk.io/x/tx v0.14.0 // indirect
 	filippo.io/edwards25519 v1.1.0 // indirect
@@ -231,7 +233,6 @@ require (
 	github.com/gostaticanalysis/forcetypeassert v0.2.0 // indirect
 	github.com/gostaticanalysis/nilerr v0.1.1 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0 // indirect
-	github.com/grpc-ecosystem/grpc-gateway v1.16.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.3 // indirect
 	github.com/gsterjov/go-libsecret v0.0.0-20161001094733-a6f4afe4910c // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
@@ -422,7 +423,6 @@ require (
 	google.golang.org/genproto v0.0.0-20241118233622-e639e219e697 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20251007200510-49b9836ed3ff // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20251007200510-49b9836ed3ff // indirect
-	google.golang.org/grpc v1.75.1 // indirect
 	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.5.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect

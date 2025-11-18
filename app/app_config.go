@@ -2,6 +2,8 @@ package app
 
 import (
 	"time"
+	_ "tokenchain/x/core/module"
+	coremoduletypes "tokenchain/x/core/types"
 
 	runtimev1alpha1 "cosmossdk.io/api/cosmos/app/runtime/v1alpha1"
 	appv1alpha1 "cosmossdk.io/api/cosmos/app/v1alpha1"
@@ -123,7 +125,8 @@ var (
 						// ibc modules
 						ibcexported.ModuleName,
 						// chain modules
-						// this line is used by starport scaffolding # stargate/app/beginBlockers
+						coremoduletypes.ModuleName,
+// this line is used by starport scaffolding # stargate/app/beginBlockers
 					},
 					EndBlockers: []string{
 						govtypes.ModuleName,
@@ -131,7 +134,8 @@ var (
 						feegrant.ModuleName,
 						group.ModuleName,
 						// chain modules
-						// this line is used by starport scaffolding # stargate/app/endBlockers
+						coremoduletypes.ModuleName,
+// this line is used by starport scaffolding # stargate/app/endBlockers
 					},
 					// The following is mostly only needed when ModuleName != StoreKey name.
 					OverrideStoreKeys: []*runtimev1alpha1.StoreKeyConfig{
@@ -167,7 +171,8 @@ var (
 						ibctransfertypes.ModuleName,
 						icatypes.ModuleName,
 						// chain modules
-						// this line is used by starport scaffolding # stargate/app/initGenesis
+						coremoduletypes.ModuleName,
+// this line is used by starport scaffolding # stargate/app/initGenesis
 					},
 				}),
 			},
@@ -263,7 +268,11 @@ var (
 				Name:   epochstypes.ModuleName,
 				Config: appconfig.WrapAny(&epochsmodulev1.Module{}),
 			},
-			// this line is used by starport scaffolding # stargate/app/moduleConfig
+			{
+				Name:   coremoduletypes.ModuleName,
+				Config: appconfig.WrapAny(&coremoduletypes.Module{}),
+			},
+// this line is used by starport scaffolding # stargate/app/moduleConfig
 		},
 	})
 )
