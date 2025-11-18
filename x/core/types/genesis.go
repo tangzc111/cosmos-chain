@@ -1,14 +1,26 @@
 package types
 
+import "fmt"
+
 // DefaultGenesis returns the default genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-	    Params:	DefaultParams(),
-	}
+		Params:  DefaultParams(),
+		UserMap: []User{}}
 }
 
 // Validate performs basic genesis state validation returning an error upon any
 // failure.
 func (gs GenesisState) Validate() error {
+	userIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.UserMap {
+		index := fmt.Sprint(elem.Index)
+		if _, ok := userIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for user")
+		}
+		userIndexMap[index] = struct{}{}
+	}
+
 	return gs.Params.Validate()
 }

@@ -10,5 +10,4 @@ option go_package = "tokenchain/x/core/types";
 message Params {
   option (amino.name) = "tokenchain/x/core/Params";
   option (gogoproto.equal) = true;
-  
 }

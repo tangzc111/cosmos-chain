@@ -126,7 +126,7 @@ var (
 						ibcexported.ModuleName,
 						// chain modules
 						coremoduletypes.ModuleName,
-// this line is used by starport scaffolding # stargate/app/beginBlockers
+						// this line is used by starport scaffolding # stargate/app/beginBlockers
 					},
 					EndBlockers: []string{
 						govtypes.ModuleName,
@@ -135,7 +135,7 @@ var (
 						group.ModuleName,
 						// chain modules
 						coremoduletypes.ModuleName,
-// this line is used by starport scaffolding # stargate/app/endBlockers
+						// this line is used by starport scaffolding # stargate/app/endBlockers
 					},
 					// The following is mostly only needed when ModuleName != StoreKey name.
 					OverrideStoreKeys: []*runtimev1alpha1.StoreKeyConfig{
@@ -172,7 +172,7 @@ var (
 						icatypes.ModuleName,
 						// chain modules
 						coremoduletypes.ModuleName,
-// this line is used by starport scaffolding # stargate/app/initGenesis
+						// this line is used by starport scaffolding # stargate/app/initGenesis
 					},
 				}),
 			},
@@ -272,7 +272,7 @@ var (
 				Name:   coremoduletypes.ModuleName,
 				Config: appconfig.WrapAny(&coremoduletypes.Module{}),
 			},
-// this line is used by starport scaffolding # stargate/app/moduleConfig
+			// this line is used by starport scaffolding # stargate/app/moduleConfig
 		},
 	})
 )

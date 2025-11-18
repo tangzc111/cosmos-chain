@@ -1,11 +1,13 @@
 syntax = "proto3";
+
 package tokenchain.core.v1;
 
 import "amino/amino.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
-import "cosmos/base/query/v1beta1/pagination.proto";
 import "tokenchain/core/v1/params.proto";
+import "tokenchain/core/v1/user.proto";
 
 option go_package = "tokenchain/x/core/types";
 
@@ -14,6 +16,16 @@ service Query {
   // Parameters queries the parameters of the module.
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/tokenchain/core/v1/params";
+  }
+
+  // ListUser Queries a list of User items.
+  rpc GetUser(QueryGetUserRequest) returns (QueryGetUserResponse) {
+    option (google.api.http).get = "/tokenchain/core/v1/user/{index}";
+  }
+
+  // ListUser defines the ListUser RPC.
+  rpc ListUser(QueryAllUserRequest) returns (QueryAllUserResponse) {
+    option (google.api.http).get = "/tokenchain/core/v1/user";
   }
 }
 
@@ -27,4 +39,25 @@ message QueryParamsResponse {
     (gogoproto.nullable) = false,
     (amino.dont_omitempty) = true
   ];
+}
+
+// QueryGetUserRequest defines the QueryGetUserRequest message.
+message QueryGetUserRequest {
+  string index = 1;
+}
+
+// QueryGetUserResponse defines the QueryGetUserResponse message.
+message QueryGetUserResponse {
+  User user = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryAllUserRequest defines the QueryAllUserRequest message.
+message QueryAllUserRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+// QueryAllUserResponse defines the QueryAllUserResponse message.
+message QueryAllUserResponse {
+  repeated User user = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }

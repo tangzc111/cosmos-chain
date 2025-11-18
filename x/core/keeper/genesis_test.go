@@ -11,8 +11,8 @@ import (
 func TestGenesis(t *testing.T) {
 	genesisState := types.GenesisState{
 		Params: types.DefaultParams(),
-		
-	}
+
+		UserMap: []types.User{{Index: "0"}, {Index: "1"}}}
 
 	f := initFixture(t)
 	err := f.keeper.InitGenesis(f.ctx, genesisState)
@@ -21,6 +21,7 @@ func TestGenesis(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, got)
 
-	
 	require.EqualExportedValues(t, genesisState.Params, got.Params)
+	require.EqualExportedValues(t, genesisState.UserMap, got.UserMap)
+
 }

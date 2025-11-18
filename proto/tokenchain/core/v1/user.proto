@@ -1,0 +1,13 @@
+syntax = "proto3";
+package tokenchain.core.v1;
+
+option go_package = "tokenchain/x/core/types";
+
+// User defines the User message.
+message User {
+  string index = 1;
+  string address = 2;
+  string username = 3;
+  string description = 4;
+  string creator = 5;
+}

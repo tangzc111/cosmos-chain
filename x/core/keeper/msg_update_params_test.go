@@ -3,11 +3,10 @@ package keeper_test
 import (
 	"testing"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 
-    "tokenchain/x/core/keeper"
-    "tokenchain/x/core/types"
+	"tokenchain/x/core/keeper"
+	"tokenchain/x/core/types"
 )
 
 func TestMsgUpdateParams(t *testing.T) {
