@@ -49,6 +49,11 @@ service Query {
   rpc ListBlockRecord(QueryAllBlockRecordRequest) returns (QueryAllBlockRecordResponse) {
     option (google.api.http).get = "/tokenchain/core/v1/block_record";
   }
+
+  // LatestBlock returns the metadata for the most recently committed block.
+  rpc LatestBlock(QueryLatestBlockRequest) returns (QueryLatestBlockResponse) {
+    option (google.api.http).get = "/tokenchain/core/v1/block/latest";
+  }
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -124,4 +129,12 @@ message QueryAllBlockRecordRequest {
 message QueryAllBlockRecordResponse {
   repeated BlockRecord block_record = 1 [(gogoproto.nullable) = false];
   cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryLatestBlockRequest defines the QueryLatestBlockRequest message.
+message QueryLatestBlockRequest {}
+
+// QueryLatestBlockResponse defines the QueryLatestBlockResponse message.
+message QueryLatestBlockResponse {
+  BlockRecord block_record = 1 [(gogoproto.nullable) = false];
 }
